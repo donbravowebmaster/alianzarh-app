@@ -1,5 +1,6 @@
 import { CotizadorForm } from '@/components/cotizador/CotizadorForm'
 
+export const dynamic = 'force-dynamic'
 export const metadata = { title: 'Cotizador — RRHH Intranet' }
 
 export default function CotizadorPage() {
