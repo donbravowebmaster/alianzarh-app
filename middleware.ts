@@ -1,30 +1,33 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Rutas que solo existen en la plataforma interna (app.alianzarh.com)
+// Rutas exclusivas de la plataforma interna
 const APP_PATHS = ['/login', '/crm', '/cotizador']
 
 export function middleware(request: NextRequest) {
   try {
-    const url = request.nextUrl.clone()
     const hostname = request.headers.get('host') || ''
+    const { pathname } = request.nextUrl
 
-    // ── Plataforma interna: app.alianzarh.com ───────────────────────────────
-    if (hostname.startsWith('app.')) {
-      // / no tiene página propia en el subdominio → reescribir a /login
-      if (url.pathname === '/') {
-        url.pathname = '/login'
-        return NextResponse.rewrite(url)
+    // ── Plataforma interna: app.alianzarh.com | app.localhost (prod)
+    //                        localhost (dev)
+    const isApp =
+      hostname.startsWith('app.') ||
+      hostname === 'localhost' ||
+      hostname === '127.0.0.1'
+
+    if (isApp) {
+      // / no tiene página propia → reescribir a /login
+      if (pathname === '/') {
+        return NextResponse.rewrite(new URL('/login', request.url))
       }
-      // Resto de rutas (/login, /crm, /cotizador) → dejar pasar
       return NextResponse.next()
     }
 
-    // ── Sitio marketing: alianzarh.com / localhost ───────────────────────────
-    // Bloquear acceso a rutas de la plataforma desde el dominio público
-    if (APP_PATHS.some((p) => url.pathname.startsWith(p))) {
-      url.pathname = '/'
-      return NextResponse.redirect(url)
+    // ── Sitio marketing: alianzarh.com / www.alianzarh.com ──────────────────
+    // Bloquear rutas de la plataforma en el dominio público
+    if (APP_PATHS.some((p) => pathname.startsWith(p))) {
+      return NextResponse.redirect(new URL('/', request.url))
     }
 
     return NextResponse.next()
@@ -35,5 +38,7 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+  ],
 }
