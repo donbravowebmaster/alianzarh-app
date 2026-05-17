@@ -4,7 +4,7 @@ import { updateSession } from '@/lib/supabase/middleware'
 const PROTECTED = ['/crm', '/cotizador']
 const LOGIN = '/login'
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const hostname = request.headers.get('host')?.split(':')[0] ?? 'localhost'
   const { pathname } = request.nextUrl
 
