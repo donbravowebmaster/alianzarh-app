@@ -1,25 +1,43 @@
 import { NextResponse, type NextRequest } from 'next/server'
 import { updateSession } from '@/lib/supabase/middleware'
 
-const PROTECTED_PATHS = ['/crm', '/cotizador']
-const PUBLIC_PATH = '/'
+const PROTECTED = ['/crm', '/cotizador']
+const LOGIN = '/login'
 
 export async function proxy(request: NextRequest) {
+  const hostname = request.headers.get('host')?.split(':')[0] ?? 'localhost'
   const { pathname } = request.nextUrl
-  const { supabaseResponse, user } = await updateSession(request)
 
-  const isProtected = PROTECTED_PATHS.some((p) => pathname.startsWith(p))
-  const isRoot = pathname === PUBLIC_PATH
+  // app.alianzarh.com  |  app.localhost (dev)
+  const isApp = hostname.startsWith('app.')
 
-  if (isRoot && user) {
-    return NextResponse.redirect(new URL('/crm', request.url))
+  if (isApp) {
+    const { supabaseResponse, user } = await updateSession(request)
+
+    // / → /crm (auth) o /login (no auth)
+    if (pathname === '/') {
+      return NextResponse.redirect(new URL(user ? '/crm' : LOGIN, request.url))
+    }
+
+    // Usuario autenticado que vuelve al login → /crm
+    if (pathname === LOGIN && user) {
+      return NextResponse.redirect(new URL('/crm', request.url))
+    }
+
+    // Rutas protegidas sin sesión → /login
+    if (PROTECTED.some((p) => pathname.startsWith(p)) && !user) {
+      return NextResponse.redirect(new URL(LOGIN, request.url))
+    }
+
+    return supabaseResponse
   }
 
-  if (isProtected && !user) {
+  // Dominio marketing: bloquear rutas de la plataforma
+  if ([...PROTECTED, LOGIN].some((p) => pathname.startsWith(p))) {
     return NextResponse.redirect(new URL('/', request.url))
   }
 
-  return supabaseResponse
+  return NextResponse.next()
 }
 
 export const config = {
