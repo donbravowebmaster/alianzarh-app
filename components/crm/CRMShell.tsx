@@ -19,6 +19,15 @@ type PipelineCard = {
 
 type VacanteOption = { id: string; titulo: string }
 
+type PipelineQueryRow = {
+  id: string
+  etapa: EtapaPipeline
+  candidato_id: string
+  vacante_id: string
+  candidatos: { nombre: string; apellido: string; email: string | null } | null
+  vacantes: { titulo: string } | null
+}
+
 type FormState = {
   nombre: string
   apellido: string
@@ -62,9 +71,9 @@ export function CRMShell() {
 
     if (pipeline) {
       setCards(
-        pipeline.map((row) => {
-          const c = row.candidatos as { nombre: string; apellido: string; email: string | null } | null
-          const v = row.vacantes as { titulo: string } | null
+        (pipeline as unknown as PipelineQueryRow[]).map((row) => {
+          const c = row.candidatos
+          const v = row.vacantes
           return {
             id: row.id,
             candidato_id: row.candidato_id,

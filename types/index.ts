@@ -1,6 +1,18 @@
-// ─── Supabase DB Types ────────────────────────────────────────────────────────
+// ─── Domain Enums ─────────────────────────────────────────────────────────────
 
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
+
+export type VacanteEstado = 'activa' | 'pausada' | 'cerrada' | 'cancelada'
+export type CandidatoEstado = 'activo' | 'contratado' | 'descartado'
+export type EtapaPipeline =
+  | 'prospecto'
+  | 'entrevista_inicial'
+  | 'entrevista_cliente'
+  | 'oferta'
+  | 'contratado'
+  | 'descartado'
+
+// ─── Supabase DB Types ────────────────────────────────────────────────────────
 
 export interface Database {
   public: {
@@ -16,8 +28,21 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['empresas']['Row'], 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['empresas']['Insert']>
+        Insert: {
+          nombre: string
+          industria?: string | null
+          contacto_nombre?: string | null
+          contacto_email?: string | null
+          contacto_telefono?: string | null
+        }
+        Update: {
+          nombre?: string
+          industria?: string | null
+          contacto_nombre?: string | null
+          contacto_email?: string | null
+          contacto_telefono?: string | null
+        }
+        Relationships: []
       }
       vacantes: {
         Row: {
@@ -31,8 +56,31 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['vacantes']['Row'], 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['vacantes']['Insert']>
+        Insert: {
+          empresa_id: string
+          titulo: string
+          sueldo_minimo?: number | null
+          sueldo_maximo?: number | null
+          estado?: VacanteEstado
+          descripcion?: string | null
+        }
+        Update: {
+          empresa_id?: string
+          titulo?: string
+          sueldo_minimo?: number | null
+          sueldo_maximo?: number | null
+          estado?: VacanteEstado
+          descripcion?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'vacantes_empresa_id_fkey'
+            columns: ['empresa_id']
+            isOneToOne: false
+            referencedRelation: 'empresas'
+            referencedColumns: ['id']
+          }
+        ]
       }
       candidatos: {
         Row: {
@@ -56,7 +104,16 @@ export interface Database {
           cv_url?: string | null
           estado?: CandidatoEstado
         }
-        Update: Partial<Database['public']['Tables']['candidatos']['Insert']>
+        Update: {
+          nombre?: string
+          apellido?: string
+          email?: string | null
+          telefono?: string | null
+          linkedin_url?: string | null
+          cv_url?: string | null
+          estado?: CandidatoEstado
+        }
+        Relationships: []
       }
       candidatos_vacantes: {
         Row: {
@@ -68,12 +125,38 @@ export interface Database {
           created_at: string
           updated_at: string
         }
-        Insert: Omit<Database['public']['Tables']['candidatos_vacantes']['Row'], 'id' | 'created_at' | 'updated_at'>
-        Update: Partial<Database['public']['Tables']['candidatos_vacantes']['Insert']>
+        Insert: {
+          candidato_id: string
+          vacante_id: string
+          etapa?: EtapaPipeline
+          notas?: string | null
+        }
+        Update: {
+          candidato_id?: string
+          vacante_id?: string
+          etapa?: EtapaPipeline
+          notas?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: 'candidatos_vacantes_candidato_id_fkey'
+            columns: ['candidato_id']
+            isOneToOne: false
+            referencedRelation: 'candidatos'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'candidatos_vacantes_vacante_id_fkey'
+            columns: ['vacante_id']
+            isOneToOne: false
+            referencedRelation: 'vacantes'
+            referencedColumns: ['id']
+          }
+        ]
       }
     }
-    Views: Record<string, never>
-    Functions: Record<string, never>
+    Views: Record<never, never>
+    Functions: Record<never, never>
     Enums: {
       vacante_estado: VacanteEstado
       candidato_estado: CandidatoEstado
@@ -81,18 +164,6 @@ export interface Database {
     }
   }
 }
-
-// ─── Domain Enums ─────────────────────────────────────────────────────────────
-
-export type VacanteEstado = 'activa' | 'pausada' | 'cerrada' | 'cancelada'
-export type CandidatoEstado = 'activo' | 'contratado' | 'descartado'
-export type EtapaPipeline =
-  | 'prospecto'
-  | 'entrevista_inicial'
-  | 'entrevista_cliente'
-  | 'oferta'
-  | 'contratado'
-  | 'descartado'
 
 // ─── Cotizador Types ───────────────────────────────────────────────────────────
 
