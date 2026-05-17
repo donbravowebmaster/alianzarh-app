@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 // Rutas exclusivas de la plataforma interna
-const APP_PATHS = ['/login', '/crm', '/cotizador']
+const APP_PATHS = ['/login', '/crm', '/cotizador', '/clientes']
 
 export function middleware(request: NextRequest) {
   try {
