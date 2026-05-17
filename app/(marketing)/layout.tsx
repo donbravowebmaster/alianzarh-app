@@ -1,5 +1,4 @@
 import type { Metadata } from 'next'
-import '../globals.css'
 
 export const metadata: Metadata = {
   title: 'AlianzaRH — Soluciones de Reclutamiento',
@@ -7,9 +6,5 @@ export const metadata: Metadata = {
 }
 
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="es" suppressHydrationWarning>
-      <body className="min-h-screen bg-white">{children}</body>
-    </html>
-  )
+  return <>{children}</>
 }

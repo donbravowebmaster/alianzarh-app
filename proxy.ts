@@ -12,11 +12,21 @@ export async function proxy(request: NextRequest) {
   const isApp = hostname.startsWith('app.')
 
   if (isApp) {
-    const { supabaseResponse, user } = await updateSession(request)
+    let user = null
+    let supabaseResponse = NextResponse.next({ request })
 
-    // / → /crm (auth) o /login (no auth)
+    try {
+      const session = await updateSession(request)
+      user = session.user
+      supabaseResponse = session.supabaseResponse
+    } catch {
+      // Si Supabase falla (cold start, timeout), se trata como no autenticado
+    }
+
+    // / → reescribir internamente a /login (no autenticado) o /crm (autenticado)
     if (pathname === '/') {
-      return NextResponse.redirect(new URL(user ? '/crm' : LOGIN, request.url))
+      const target = user ? '/crm' : LOGIN
+      return NextResponse.rewrite(new URL(target, request.url))
     }
 
     // Usuario autenticado que vuelve al login → /crm
