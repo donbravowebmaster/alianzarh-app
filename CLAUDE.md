@@ -6,19 +6,33 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**RRHH Intranet** — A recruitment management system (HR SaaS) built with Next.js 16, React 19, and Supabase.
+**AlianzaRH** — A recruitment management system (HR SaaS) built with Next.js 16, React 19, and Supabase.
 
-Two main modules:
+Four modules:
 - **CRM**: Kanban pipeline for managing candidates across 5 recruitment stages (persisted in Supabase)
+- **Clientes / Vacantes**: CRUD for client companies and job openings
 - **Cotizador**: A fee calculator for search-based recruitment services
+- **Marketing site**: Public-facing homepage at `alianzarh.com`
+
+Deployed at:
+- `alianzarh.com` → public marketing site (`app/(marketing)/`)
+- `app.alianzarh.com` → internal platform (`app/(app)/`)
 
 ## Commands
 
 ```bash
-npm run dev      # Start development server (http://localhost:3000)
-npm run build    # Build for production
-npm start        # Start production server
-npm run lint     # Run ESLint
+npm run dev           # Start development server (http://localhost:3000)
+npm run build         # Build for production
+npm start             # Start production server
+npm run lint          # Run ESLint
+npm run types:gen     # Regenerate TypeScript types from Supabase schema
+```
+
+Deploy:
+```bash
+vercel --prod         # Deploy to production
+vercel alias set <url> app.alianzarh.com   # Assign subdomain after deploy
+vercel alias set <url> alianzarh.com
 ```
 
 Required environment variables in `.env.local`:
@@ -36,14 +50,45 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...
 - **Database**: Supabase PostgreSQL with Row Level Security (RLS)
 - **Styling**: Tailwind CSS v4 via PostCSS (`@import "tailwindcss"` syntax); no component library
 
-### Middleware & Route Protection
+### Multi-tenant Routing (`proxy.ts`)
 
-Route protection lives in `proxy.ts` (exported as `proxy()`, not `middleware`). For Next.js to enforce it, a root `middleware.ts` must import and re-export it as `middleware`. **If `middleware.ts` is missing, protected routes are publicly accessible.** Protected paths: `/crm`, `/cotizador`. Authenticated users at `/` are redirected to `/crm`.
+**Next.js 16 renamed Middleware to Proxy.** The file MUST be `proxy.ts` at the project root with `export function proxy()`. Using `middleware.ts` or `export function middleware()` causes `MIDDLEWARE_INVOCATION_FAILED` on Vercel's Edge Runtime.
 
-- `lib/supabase/middleware.ts` — `updateSession()` refreshes the Supabase session cookie and returns `{ supabaseResponse, user }`
-- `lib/supabase/client.ts` — browser-side client
-- `lib/supabase/server.ts` — server-side client (Server Components, uses `next/headers` cookies)
-- Protected routes live in `app/(protected)/` with their own layout (sidebar + content wrapper)
+`proxy.ts` is a lightweight subdomain router — **no Supabase, no DB calls** (Edge Runtime incompatible):
+- `app.alianzarh.com/` → redirect to `/login`
+- `app.alianzarh.com/*` → `NextResponse.next()` (Next.js routes internally)
+- `alianzarh.com/login|/crm|/cotizador|/clientes` → redirect to `/`
+- `localhost` treated as app platform for local dev
+
+Auth guard lives in `app/(app)/(protected)/layout.tsx` (Server Component, Node.js runtime):
+- Calls `createClient()` + `getUser()` — if no session → `redirect('/login')`
+
+Supabase clients:
+- `lib/supabase/client.ts` — browser-side (`createBrowserClient`)
+- `lib/supabase/server.ts` — server-side (`createServerClient`, uses `next/headers`)
+- `lib/supabase/middleware.ts` — `updateSession()` utility (available but not currently used in proxy)
+
+### Route Structure
+
+```
+app/
+  layout.tsx                  ← single root layout (html, body, globals.css)
+  (marketing)/                ← alianzarh.com — public site (indexed)
+    layout.tsx                ← metadata only
+    page.tsx                  ← URL: /
+  (app)/                      ← app.alianzarh.com — internal platform (noindex)
+    layout.tsx                ← metadata only
+    login/page.tsx            ← URL: /login
+    (protected)/              ← auth-gated (layout.tsx checks session)
+      layout.tsx              ← getUser() + Sidebar
+      crm/page.tsx            ← URL: /crm
+      clientes/               ← URL: /clientes
+        page.tsx
+        actions.ts            ← crearEmpresa, crearVacante (Server Actions)
+      cotizador/              ← URL: /cotizador
+        page.tsx
+        actions.ts            ← calcularAction
+```
 
 ### Database Schema (`supabase/schema.sql`)
 
@@ -56,23 +101,28 @@ The `etapa_pipeline` enum has 6 values (`prospecto` → `contratado` + `descarta
 
 ### Server Actions & Business Logic
 
-- Server Actions are co-located with routes (e.g., `app/(protected)/cotizador/actions.ts`)
-- `calcularAction()` validates input then delegates to `lib/cotizador/calculator.ts`
-- The calculator is pure business logic: 5 salary levels (Operativo → Ejecutivo). Formula: `costoPuesto = COSTO_BASE * factor`, `precio = round(costoPuesto / (1 - 0.30))`. `COSTO_BASE` = 30,950 / 8 ≈ 3,869 MXN. Salary is used only to pick the level; it does not appear in the price formula.
-- IT classification (`'Ingeniería / TI'`) overrides the `nivel` label via keyword matching on the job title — the salary-derived `factor` and `garantia` remain unchanged.
+Server Actions are co-located with routes, always `'use server'` + `revalidatePath` + `router.refresh()` on the client for live list updates.
+
+- `calcularAction()` → delegates to `lib/cotizador/calculator.ts` (pure, no DB)
+  - Formula: `costoPuesto = COSTO_BASE * factor`, `precio = round(costoPuesto / 0.70)`. COSTO_BASE = 30,950/8 ≈ 3,869 MXN
+  - IT keyword detection overrides `nivel` label only; `factor` and `garantia` come from salary tier
+- `crearEmpresa()` / `crearVacante()` → INSERT into Supabase + `revalidatePath('/clientes')`
 
 ### Components
 
-All components are `'use client'`:
+All client components (`'use client'`):
 
 | Component | Role |
 |-----------|------|
-| `components/auth/LoginForm.tsx` | Form state + Supabase `signIn` |
-| `components/layout/Sidebar.tsx` | Navigation + `signOut` |
-| `components/cotizador/CotizadorForm.tsx` | `useTransition` + server action integration |
-| `components/crm/CRMShell.tsx` | Kanban board; reads/writes `candidatos` and `candidatos_vacantes` via Supabase client |
+| `components/auth/LoginForm.tsx` | Form state + Supabase `signIn`, redirects to `/crm` |
+| `components/layout/Sidebar.tsx` | 3 nav items (CRM, Clientes/Vacantes, Cotizador) + `signOut` → `/login` |
+| `components/crm/CRMShell.tsx` | Kanban; joined query on mount, optimistic stage update via `supabase.update()` |
+| `components/cotizador/CotizadorForm.tsx` | `useTransition` + `calcularAction` server action |
+| `components/clientes/ClientesShell.tsx` | Tabs (Empresas/Vacantes), forms with `useTransition`, lists with badges |
 
-`CRMShell` fetches pipeline data with a joined query on mount and persists stage changes immediately via optimistic `setCards` + `supabase.update()`.
+### TypeScript Types
+
+`types/index.ts` is generated by Supabase CLI — do not edit the `Database` block manually. Regenerate with `npm run types:gen`. Domain enum aliases (`VacanteEstado`, `CandidatoEstado`, `EtapaPipeline`) and Cotizador types are appended below the generated block.
 
 ### Styling
 
