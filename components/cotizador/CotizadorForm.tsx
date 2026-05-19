@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import type { CotizadorResult } from '@/types'
-import { calcularAction } from '@/app/(app)/(protected)/cotizador/actions'
+import { calcularAction } from '@/app/(protected)/cotizador/actions'
 
 const NIVEL_COLORS: Record<string, string> = {
   'Operativo / Administrativo': 'bg-gray-50 text-gray-700 border-gray-200',

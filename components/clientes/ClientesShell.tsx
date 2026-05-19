@@ -2,7 +2,7 @@
 
 import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
-import { crearEmpresa, crearVacante } from '@/app/(app)/(protected)/clientes/actions'
+import { crearEmpresa, crearVacante } from '@/app/(protected)/clientes/actions'
 import type { EmpresaRow, VacanteRow } from '@/types'
 
 type VacanteConEmpresa = VacanteRow & { empresas: { nombre: string } | null }
