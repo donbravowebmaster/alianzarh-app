@@ -8,15 +8,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **AlianzaRH** — A recruitment management system (HR SaaS) built with Next.js 16, React 19, and Supabase.
 
-Four modules:
+Three modules:
 - **CRM**: Kanban pipeline for managing candidates across 5 recruitment stages (persisted in Supabase)
 - **Clientes / Vacantes**: CRUD for client companies and job openings
 - **Cotizador**: A fee calculator for search-based recruitment services
-- **Marketing site**: Public-facing homepage at `alianzarh.com`
 
 Deployed at:
-- `alianzarh.com` → public marketing site (`app/(marketing)/`)
-- `app.alianzarh.com` → internal platform (`app/(app)/`)
+- `app.alianzarh.com` → internal platform (single-domain app, no public marketing site in the codebase)
 
 ## Commands
 
@@ -32,7 +30,6 @@ Deploy:
 ```bash
 vercel --prod         # Deploy to production
 vercel alias set <url> app.alianzarh.com   # Assign subdomain after deploy
-vercel alias set <url> alianzarh.com
 ```
 
 Required environment variables in `.env.local`:
@@ -50,44 +47,36 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGci...
 - **Database**: Supabase PostgreSQL with Row Level Security (RLS)
 - **Styling**: Tailwind CSS v4 via PostCSS (`@import "tailwindcss"` syntax); no component library
 
-### Multi-tenant Routing (`proxy.ts`)
+### Routing & Auth
 
-**Next.js 16 renamed Middleware to Proxy.** The file MUST be `proxy.ts` at the project root with `export function proxy()`. Using `middleware.ts` or `export function middleware()` causes `MIDDLEWARE_INVOCATION_FAILED` on Vercel's Edge Runtime.
+**No `proxy.ts` / middleware** — subdomain routing at the Next.js layer was removed. `app/page.tsx` simply redirects to `/login`.
 
-`proxy.ts` is a lightweight subdomain router — **no Supabase, no DB calls** (Edge Runtime incompatible):
-- `app.alianzarh.com/` → redirect to `/login`
-- `app.alianzarh.com/*` → `NextResponse.next()` (Next.js routes internally)
-- `alianzarh.com/login|/crm|/cotizador|/clientes` → redirect to `/`
-- `localhost` treated as app platform for local dev
-
-Auth guard lives in `app/(app)/(protected)/layout.tsx` (Server Component, Node.js runtime):
+Auth guard lives in `app/(protected)/layout.tsx` (Server Component, Node.js runtime):
 - Calls `createClient()` + `getUser()` — if no session → `redirect('/login')`
 
 Supabase clients:
 - `lib/supabase/client.ts` — browser-side (`createBrowserClient`)
 - `lib/supabase/server.ts` — server-side (`createServerClient`, uses `next/headers`)
-- `lib/supabase/middleware.ts` — `updateSession()` utility (available but not currently used in proxy)
+- `lib/supabase/middleware.ts` — `updateSession()` utility (present but not wired to any proxy)
+
+> **If subdomain routing is ever re-introduced:** Next.js 16 uses `proxy.ts` (not `middleware.ts`) with `export function proxy()`. Using the old name causes `MIDDLEWARE_INVOCATION_FAILED` on Vercel's Edge Runtime. Keep the proxy free of Supabase/DB calls — Edge Runtime incompatible.
 
 ### Route Structure
 
 ```
 app/
-  layout.tsx                  ← single root layout (html, body, globals.css)
-  (marketing)/                ← alianzarh.com — public site (indexed)
-    layout.tsx                ← metadata only
-    page.tsx                  ← URL: /
-  (app)/                      ← app.alianzarh.com — internal platform (noindex)
-    layout.tsx                ← metadata only
-    login/page.tsx            ← URL: /login
-    (protected)/              ← auth-gated (layout.tsx checks session)
-      layout.tsx              ← getUser() + Sidebar
-      crm/page.tsx            ← URL: /crm
-      clientes/               ← URL: /clientes
-        page.tsx
-        actions.ts            ← crearEmpresa, crearVacante (Server Actions)
-      cotizador/              ← URL: /cotizador
-        page.tsx
-        actions.ts            ← calcularAction
+  layout.tsx                  ← single root layout (html, body, globals.css); noindex
+  page.tsx                    ← URL: / → redirect('/login')
+  login/page.tsx              ← URL: /login
+  (protected)/                ← auth-gated route group
+    layout.tsx                ← getUser() + Sidebar; redirects to /login if no session
+    crm/page.tsx              ← URL: /crm
+    clientes/                 ← URL: /clientes
+      page.tsx
+      actions.ts              ← crearEmpresa, crearVacante (Server Actions)
+    cotizador/                ← URL: /cotizador
+      page.tsx
+      actions.ts              ← calcularAction
 ```
 
 ### Database Schema (`supabase/schema.sql`)
