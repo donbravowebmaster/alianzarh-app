@@ -237,4 +237,10 @@ export interface CotizadorResult {
   precio: number
   utilidad: number
   margenUtilidad: number
+  // Desglose del cálculo
+  costoBase: number
+  costoPuesto: number
+  margen: number
+  esTI: boolean
 }
+

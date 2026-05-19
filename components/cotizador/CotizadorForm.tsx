@@ -130,6 +130,69 @@ export function CotizadorForm() {
             <ResultCell label="Garantía" value={`${result.garantia} días`} />
           </div>
 
+          {/* Desglose del cálculo */}
+          <details className="border-t border-gray-100">
+            <summary className="px-6 py-3 cursor-pointer text-xs font-medium text-gray-600 hover:text-gray-900 select-none">
+              📊 Ver desglose del cálculo
+            </summary>
+            <div className="px-6 py-4 bg-gray-50 space-y-3 text-xs">
+              {/* Paso 1: Detección de TI */}
+              <div className="space-y-1">
+                <p className="font-medium text-gray-700">1. Análisis del puesto</p>
+                <p className="text-gray-600">
+                  {result.esTI
+                    ? `✓ "${result.puesto}" detectado como puesto de TI → Nivel: ${result.nivel}`
+                    : `○ "${result.puesto}" es un puesto general → Nivel: ${result.nivel}`}
+                </p>
+              </div>
+
+              {/* Paso 2: Costo base */}
+              <div className="space-y-1">
+                <p className="font-medium text-gray-700">2. Costo operativo base</p>
+                <p className="text-gray-600">
+                  $30,950 MXN ÷ 8 vacantes/mes = <strong>{formatMXN(result.costoBase)}</strong>/puesto
+                </p>
+              </div>
+
+              {/* Paso 3: Factor por nivel */}
+              <div className="space-y-1">
+                <p className="font-medium text-gray-700">3. Factor de complejidad</p>
+                <p className="text-gray-600">
+                  Nivel <strong>"{result.nivel}"</strong> = Factor <strong>{result.factor}x</strong>
+                </p>
+              </div>
+
+              {/* Paso 4: Costo del puesto */}
+              <div className="space-y-1">
+                <p className="font-medium text-gray-700">4. Costo para este puesto</p>
+                <p className="text-gray-600">
+                  {formatMXN(result.costoBase)} × {result.factor} = <strong>{formatMXN(result.costoPuesto)}</strong>
+                </p>
+              </div>
+
+              {/* Paso 5: Margen y precio final */}
+              <div className="space-y-1">
+                <p className="font-medium text-gray-700">5. Precio al cliente (margen {Math.round(result.margen * 100)}%)</p>
+                <p className="text-gray-600">
+                  {formatMXN(result.costoPuesto)} ÷ (1 − 0.30) = <strong>{formatMXN(result.precio)}</strong>
+                </p>
+              </div>
+
+              {/* Resumen de márgenes */}
+              <div className="pt-2 border-t border-gray-200 space-y-1">
+                <p className="font-medium text-gray-700">💰 Resumen financiero</p>
+                <div className="grid grid-cols-2 gap-2 text-gray-600">
+                  <div>Costo interno:</div>
+                  <div className="font-medium">{formatMXN(result.costoPuesto)}</div>
+                  <div>Precio cliente:</div>
+                  <div className="font-medium text-emerald-700">{formatMXN(result.precio)}</div>
+                  <div>Tu utilidad (30%):</div>
+                  <div className="font-medium text-emerald-600">{formatMXN(result.utilidad)}</div>
+                </div>
+              </div>
+            </div>
+          </details>
+
           <div className="px-6 py-4 border-t border-gray-100">
             <button
               onClick={handleReset}

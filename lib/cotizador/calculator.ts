@@ -30,8 +30,8 @@ function esTI(puesto: string): boolean {
 export function calcularCotizacion(input: CotizadorInput): CotizadorResult {
   const { puesto, sueldo } = input
   const match = NIVELES.find((n) => sueldo <= n.umbralMax)!
-
-  const nivel: NivelPuesto = esTI(puesto) ? 'Ingeniería / TI' : match.nivel
+  const tiDetected = esTI(puesto)
+  const nivel: NivelPuesto = tiDetected ? 'Ingeniería / TI' : match.nivel
 
   const costoPuesto = COSTO_BASE * match.factor
   const precio = Math.round(costoPuesto / (1 - MARGEN))
@@ -47,5 +47,9 @@ export function calcularCotizacion(input: CotizadorInput): CotizadorResult {
     precio,
     utilidad,
     margenUtilidad,
+    costoBase: Math.round(COSTO_BASE),
+    costoPuesto: Math.round(costoPuesto),
+    margen: MARGEN,
+    esTI: tiDetected,
   }
 }
