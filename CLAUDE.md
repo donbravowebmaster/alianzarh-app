@@ -80,11 +80,14 @@ app/
     cotizador/                ← URL: /cotizador
       page.tsx
       actions.ts              ← calcularAction
+    leads/                    ← URL: /leads
+      page.tsx
+      actions.ts              ← crearLead, actualizarLeadEstado, eliminarLead (Server Actions)
 ```
 
 ### Database Schema (`supabase/schema.sql`)
 
-Four tables: `empresas`, `vacantes`, `candidatos`, `candidatos_vacantes` (N:M join).  
+Five tables: `empresas`, `vacantes`, `candidatos`, `candidatos_vacantes` (N:M join), `leads`.  
 Three ENUMs: `vacante_estado`, `candidato_estado`, `etapa_pipeline`.  
 All tables: RLS with authenticated-users-only full-access policy; `updated_at` auto-trigger.  
 TypeScript types in `types/index.ts` — `Database` interface plus convenience aliases (`EmpresaRow`, `VacanteRow`, etc.).
@@ -99,6 +102,7 @@ Server Actions are co-located with routes, always `'use server'` + `revalidatePa
   - Formula: `costoPuesto = COSTO_BASE * factor`, `precio = round(costoPuesto / 0.70)`. COSTO_BASE = 30,950/8 ≈ 3,869 MXN
   - IT keyword detection overrides `nivel` label only; `factor` and `garantia` come from salary tier
 - `crearEmpresa()` / `crearVacante()` → INSERT into Supabase + `revalidatePath('/clientes')`
+- `crearLead()` / `actualizarLeadEstado()` / `eliminarLead()` → CRM operations + `revalidatePath('/leads')`
 
 ### Components
 
@@ -107,10 +111,11 @@ All client components (`'use client'`):
 | Component | Role |
 |-----------|------|
 | `components/auth/LoginForm.tsx` | Form state + Supabase `signIn`, redirects to `/crm` |
-| `components/layout/Sidebar.tsx` | 3 nav items (CRM, Clientes/Vacantes, Cotizador) + `signOut` → `/login` |
+| `components/layout/Sidebar.tsx` | 4 nav items (Leads, CRM, Clientes/Vacantes, Cotizador) + `signOut` → `/login` |
 | `components/crm/CRMShell.tsx` | Kanban; joined query on mount, optimistic stage update via `supabase.update()` |
 | `components/cotizador/CotizadorForm.tsx` | `useTransition` + `calcularAction` server action |
 | `components/clientes/ClientesShell.tsx` | Tabs (Empresas/Vacantes), forms with `useTransition`, lists with badges |
+| `components/leads/LeadsShell.tsx` | Leads list dashboard + Bento Grid KPIs + manual creation modal |
 
 ### TypeScript Types
 
