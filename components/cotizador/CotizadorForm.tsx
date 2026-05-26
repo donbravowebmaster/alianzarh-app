@@ -141,7 +141,7 @@ export function CotizadorForm() {
             </h2>
             
             <div>
-              <label htmlFor="puesto" className="block text-xs font-medium text-gray-700 mb-1.5">
+              <label htmlFor="puesto" className="block text-xs font-semibold text-gray-700 mb-1.5">
                 Puesto o Vacante
               </label>
               <input
@@ -150,14 +150,14 @@ export function CotizadorForm() {
                 value={puesto}
                 onChange={(e) => setPuesto(e.target.value)}
                 placeholder="Ej. Desarrollador Fullstack, Director de Operaciones"
-                className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 placeholder:text-gray-400 disabled:bg-gray-50 transition-shadow"
+                className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 disabled:bg-gray-50 transition-shadow"
                 disabled={isPending}
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="sueldo" className="block text-xs font-medium text-gray-700 mb-1.5">
+              <label htmlFor="sueldo" className="block text-xs font-semibold text-gray-700 mb-1.5">
                 Sueldo mensual bruto sugerido
               </label>
               <div className="relative">
@@ -169,7 +169,7 @@ export function CotizadorForm() {
                   value={sueldo}
                   onChange={(e) => setSueldo(e.target.value.replace(/[^0-9.,]/g, ''))}
                   placeholder="0"
-                  className="w-full pl-8 pr-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 placeholder:text-gray-400 disabled:bg-gray-50 transition-shadow"
+                  className="w-full pl-8 pr-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 disabled:bg-gray-50 transition-shadow"
                   disabled={isPending}
                   required
                 />
@@ -185,7 +185,7 @@ export function CotizadorForm() {
             <button
               type="submit"
               disabled={isPending}
-              className="w-full py-2.5 px-4 text-sm font-medium text-white bg-gray-900 rounded-xl hover:bg-gray-800 active:scale-[0.99] disabled:bg-gray-300 disabled:cursor-not-allowed transition-all shadow-sm"
+              className="w-full py-2.5 px-4 text-sm font-bold text-white bg-brand-blue rounded-xl hover:bg-brand-blue-dark active:scale-[0.99] disabled:bg-gray-300 disabled:cursor-not-allowed transition-all shadow-sm shadow-brand-blue/15"
             >
               {isPending ? 'Calculando...' : 'Calcular cotización'}
             </button>
@@ -340,7 +340,7 @@ export function CotizadorForm() {
             onClick={() => setActiveTab('financiero')}
             className={`flex-1 py-2.5 text-center text-xs font-bold border-b-2 transition-all cursor-pointer ${
               activeTab === 'financiero'
-                ? 'border-gray-900 text-gray-900'
+                ? 'border-brand-blue text-brand-blue'
                 : 'border-transparent text-gray-500 hover:text-gray-800'
             }`}
           >
@@ -350,7 +350,7 @@ export function CotizadorForm() {
             onClick={() => setActiveTab('complejidad')}
             className={`flex-1 py-2.5 text-center text-xs font-bold border-b-2 transition-all cursor-pointer ${
               activeTab === 'complejidad'
-                ? 'border-gray-900 text-gray-900'
+                ? 'border-brand-blue text-brand-blue'
                 : 'border-transparent text-gray-500 hover:text-gray-800'
             }`}
           >
@@ -360,7 +360,7 @@ export function CotizadorForm() {
             onClick={() => setActiveTab('keywords')}
             className={`flex-1 py-2.5 text-center text-xs font-bold border-b-2 transition-all cursor-pointer ${
               activeTab === 'keywords'
-                ? 'border-gray-900 text-gray-900'
+                ? 'border-brand-blue text-brand-blue'
                 : 'border-transparent text-gray-500 hover:text-gray-800'
             }`}
           >
@@ -388,7 +388,7 @@ export function CotizadorForm() {
                     type="number"
                     value={config.costoOperativoMensual}
                     onChange={(e) => handleConfigChange('costoOperativoMensual', Math.max(0, parseFloat(e.target.value) || 0))}
-                    className="w-full pl-6 pr-3 py-2 text-xs border border-gray-300 rounded-lg outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 font-medium"
+                    className="w-full pl-6 pr-3 py-2 text-xs border border-gray-300 rounded-lg outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue font-medium"
                   />
                 </div>
                 <p className="text-[10px] text-gray-400 mt-1">Costo total de operación mensual de la agencia de reclutamiento.</p>
@@ -402,7 +402,7 @@ export function CotizadorForm() {
                   type="number"
                   value={config.capacidadVacantesMes}
                   onChange={(e) => handleConfigChange('capacidadVacantesMes', Math.max(1, parseInt(e.target.value) || 1))}
-                  className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 font-medium"
+                  className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue font-medium"
                 />
                 <p className="text-[10px] text-gray-400 mt-1">Número de vacantes promedio que el equipo puede cerrar mensualmente.</p>
               </div>
@@ -465,7 +465,7 @@ export function CotizadorForm() {
                           min="0.1"
                           value={n.factor}
                           onChange={(e) => handleNivelChange(idx, 'factor', parseFloat(e.target.value) || 0)}
-                          className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md outline-none focus:border-gray-900 font-medium"
+                          className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md outline-none focus:border-brand-blue font-medium"
                         />
                       </div>
                       <div>
@@ -475,7 +475,7 @@ export function CotizadorForm() {
                           min="0"
                           value={n.garantiaDias}
                           onChange={(e) => handleNivelChange(idx, 'garantiaDias', parseInt(e.target.value) || 0)}
-                          className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md outline-none focus:border-gray-900 font-medium"
+                          className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md outline-none focus:border-brand-blue font-medium"
                         />
                       </div>
                       <div>
@@ -486,7 +486,7 @@ export function CotizadorForm() {
                           value={n.umbralMax === 999_999_999 ? '' : n.umbralMax}
                           placeholder={n.umbralMax === 999_999_999 ? '∞ Sin Límite' : ''}
                           onChange={(e) => handleNivelChange(idx, 'umbralMax', e.target.value === '' ? 999_999_999 : parseFloat(e.target.value) || 0)}
-                          className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md outline-none focus:border-gray-900 font-medium"
+                          className="w-full px-2 py-1 text-xs border border-gray-300 rounded-md outline-none focus:border-brand-blue font-medium"
                         />
                       </div>
                     </div>
@@ -512,7 +512,7 @@ export function CotizadorForm() {
                   value={config.keywordsTI.join(', ')}
                   onChange={(e) => handleKeywordsChange(e.target.value)}
                   placeholder="Ej. ing, ingeniero, desarrollador, developer, it"
-                  className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 placeholder:text-gray-400 font-mono"
+                  className="w-full px-3 py-2 text-xs border border-gray-300 rounded-lg outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 font-mono"
                 />
                 <p className="text-[10px] text-gray-400 mt-1 leading-relaxed">
                   Tip: Escribe las palabras en minúsculas y sin acentos. La búsqueda no distingue entre mayúsculas y minúsculas.

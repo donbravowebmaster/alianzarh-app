@@ -4,6 +4,9 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 @AGENTS.md
 
+> [!IMPORTANT]
+> **DIRECTRIZ DE DESARROLLO**: De ahora en adelante, el único gestor de paquetes permitido y utilizado en este proyecto es **pnpm**. Bajo ninguna circunstancia uses `npm`, `yarn` ni otros gestores.
+
 ## Project Overview
 
 **AlianzaRH** — A recruitment management system (HR SaaS) built with Next.js 16, React 19, and Supabase.
@@ -19,11 +22,11 @@ Deployed at:
 ## Commands
 
 ```bash
-npm run dev           # Start development server (http://localhost:3000)
-npm run build         # Build for production
-npm start             # Start production server
-npm run lint          # Run ESLint
-npm run types:gen     # Regenerate TypeScript types from Supabase schema
+pnpm dev              # Start development server (http://localhost:3000)
+pnpm build            # Build for production
+pnpm start            # Start production server
+pnpm lint             # Run ESLint
+pnpm types:gen        # Regenerate TypeScript types from Supabase schema
 ```
 
 Deploy:

@@ -188,12 +188,12 @@ export function CRMShell() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Buscar candidato..."
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 placeholder:text-gray-400 bg-white"
+                  className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 bg-white transition-shadow"
                 />
               </div>
               <button
                 onClick={openModal}
-                className="w-full sm:w-auto shrink-0 whitespace-nowrap flex items-center justify-center gap-2 px-4 py-2 bg-gray-900 text-white text-sm font-medium rounded-lg hover:bg-gray-800 transition-colors"
+                className="w-full sm:w-auto shrink-0 whitespace-nowrap flex items-center justify-center gap-2 px-4 py-2.5 bg-brand-blue text-white text-sm font-bold rounded-xl hover:bg-brand-blue-dark active:scale-[0.99] transition-all shadow-sm shadow-brand-blue/15 cursor-pointer"
               >
                 + Nuevo Candidato
               </button>
@@ -276,17 +276,17 @@ export function CRMShell() {
                     value={form.nombre}
                     onChange={(e) => setForm((p) => ({ ...p, nombre: e.target.value }))}
                     placeholder="María"
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 placeholder:text-gray-400"
+                    className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 transition-shadow"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1.5">Apellido</label>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">Apellido</label>
                   <input
                     type="text"
                     value={form.apellido}
                     onChange={(e) => setForm((p) => ({ ...p, apellido: e.target.value }))}
                     placeholder="García"
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 placeholder:text-gray-400"
+                    className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 transition-shadow"
                   />
                 </div>
               </div>
@@ -300,7 +300,7 @@ export function CRMShell() {
                   value={form.email}
                   onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                   placeholder="(Opcional)"
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 placeholder:text-gray-400"
+                  className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 transition-shadow"
                 />
               </div>
 
@@ -314,7 +314,7 @@ export function CRMShell() {
                   <select
                     value={form.vacante_id}
                     onChange={(e) => setForm((p) => ({ ...p, vacante_id: e.target.value }))}
-                    className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 bg-white"
+                    className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue bg-white transition-shadow"
                   >
                     {vacantes.map((v) => (
                       <option key={v.id} value={v.id}>{v.titulo}</option>
@@ -328,7 +328,7 @@ export function CRMShell() {
                 <select
                   value={form.etapa}
                   onChange={(e) => setForm((p) => ({ ...p, etapa: e.target.value as EtapaPipeline }))}
-                  className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 bg-white"
+                  className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue bg-white transition-shadow"
                 >
                   {COLUMNAS.map((c) => (
                     <option key={c.etapa} value={c.etapa}>{c.label}</option>
@@ -353,7 +353,7 @@ export function CRMShell() {
                 <button
                   type="submit"
                   disabled={saving || vacantes.length === 0}
-                  className="flex-1 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 transition-colors disabled:opacity-50"
+                  className="flex-1 py-2.5 text-sm font-bold text-white bg-brand-blue rounded-xl hover:bg-brand-blue-dark active:scale-[0.99] transition-all shadow-sm shadow-brand-blue/15 cursor-pointer disabled:opacity-50"
                 >
                   {saving ? 'Guardando…' : 'Guardar candidato'}
                 </button>

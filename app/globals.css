@@ -1,15 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
 
+@theme {
+  --font-sans: "Be Vietnam Pro", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: "Be Vietnam Pro", system-ui, -apple-system, sans-serif;
+
+  --color-brand-blue: #357ee3;
+  --color-brand-blue-dark: #225db8;
+  --color-brand-purple: #c379d8;
+  --color-brand-gray: #626262;
+  --color-brand-dark: #0d1117;
+}
+
 :root {
-  --background: #f8f9fa;
-  --foreground: #111827;
+  --background: #f4f7fc;
+  --foreground: #0d1117;
   --sidebar-width: 220px;
 }
 
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-family: var(--font-sans);
   -webkit-font-smoothing: antialiased;
 }
 

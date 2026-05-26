@@ -50,18 +50,18 @@ export function Sidebar() {
       {/* Logo / Brand */}
       <div className="px-5 py-4 border-b border-gray-100">
         <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-gray-900 rounded-md flex items-center justify-center flex-shrink-0">
-            <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+          <div className="w-7 h-7 bg-brand-blue rounded-md flex items-center justify-center flex-shrink-0 shadow-sm shadow-brand-blue/25">
+            <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
             </svg>
           </div>
-          <span className="text-sm font-semibold text-gray-900 tracking-tight">RRHH Intranet</span>
+          <span className="text-sm font-extrabold text-gray-900 tracking-tight">Alianza RH</span>
         </div>
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 px-3 py-3 space-y-0.5">
-        <p className="px-2 pb-1.5 text-[10px] font-semibold text-gray-400 uppercase tracking-wider">
+        <p className="px-2 pb-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
           Módulos
         </p>
         {navItems.map((item) => {
@@ -70,13 +70,13 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium transition-colors ${
+              className={`flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 isActive
-                  ? 'bg-gray-100 text-gray-900'
-                  : 'text-gray-500 hover:text-gray-900 hover:bg-gray-50'
+                  ? 'bg-brand-blue/10 text-brand-blue'
+                  : 'text-gray-500 hover:text-brand-blue hover:bg-brand-blue/5'
               }`}
             >
-              <span className={isActive ? 'text-gray-900' : 'text-gray-400'}>{item.icon}</span>
+              <span className={isActive ? 'text-brand-blue' : 'text-gray-400 group-hover:text-brand-blue transition-colors'}>{item.icon}</span>
               {item.label}
             </Link>
           )
@@ -87,7 +87,7 @@ export function Sidebar() {
       <div className="px-3 py-3 border-t border-gray-100">
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-medium text-gray-500 hover:text-gray-900 hover:bg-gray-50 transition-colors"
+          className="w-full flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-semibold text-gray-500 hover:text-red-600 hover:bg-red-50 transition-all duration-200 cursor-pointer"
         >
           <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

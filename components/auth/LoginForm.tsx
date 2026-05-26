@@ -44,7 +44,7 @@ export function LoginForm() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             placeholder="usuario@empresa.com"
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none transition-colors focus:border-gray-900 focus:ring-1 focus:ring-gray-900 placeholder:text-gray-400 disabled:bg-gray-50 disabled:text-gray-400"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none transition-colors focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 disabled:bg-gray-50 disabled:text-gray-400"
             disabled={loading}
           />
         </div>
@@ -61,7 +61,7 @@ export function LoginForm() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             placeholder="••••••••"
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none transition-colors focus:border-gray-900 focus:ring-1 focus:ring-gray-900 placeholder:text-gray-400 disabled:bg-gray-50 disabled:text-gray-400"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none transition-colors focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 disabled:bg-gray-50 disabled:text-gray-400"
             disabled={loading}
           />
         </div>
@@ -75,7 +75,7 @@ export function LoginForm() {
         <button
           type="submit"
           disabled={loading || !email || !password}
-          className="w-full py-2 px-4 text-sm font-medium text-white bg-gray-900 rounded-lg transition-colors hover:bg-gray-800 disabled:bg-gray-300 disabled:cursor-not-allowed"
+          className="w-full py-2.5 px-4 text-sm font-semibold text-white bg-brand-blue rounded-xl transition-all duration-200 hover:bg-brand-blue-dark active:scale-[0.99] disabled:bg-gray-300 disabled:cursor-not-allowed shadow-sm shadow-brand-blue/15"
         >
           {loading ? 'Ingresando...' : 'Ingresar'}
         </button>

@@ -14,8 +14,8 @@ const ESTADO_COLORS: Record<string, string> = {
   cancelada: 'bg-red-50 text-red-700 border-red-200',
 }
 
-const input = 'w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:border-gray-900 focus:ring-1 focus:ring-gray-900 placeholder:text-gray-400 disabled:bg-gray-50 bg-white'
-const label = 'block text-xs font-medium text-gray-700 mb-1.5'
+const input = 'w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 disabled:bg-gray-50 bg-white transition-shadow'
+const label = 'block text-xs font-semibold text-gray-700 mb-1.5'
 
 function formatMXN(n: number) {
   return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(n)
@@ -88,9 +88,9 @@ export function ClientesShell({
             <button
               key={t}
               onClick={() => setTab(t)}
-              className={`pb-3 text-sm font-medium transition-colors ${
+              className={`pb-3 text-sm font-bold transition-all ${
                 tab === t
-                  ? 'border-b-2 border-gray-900 text-gray-900'
+                  ? 'border-b-2 border-brand-blue text-brand-blue'
                   : 'text-gray-400 hover:text-gray-700'
               }`}
             >
@@ -133,7 +133,7 @@ export function ClientesShell({
               <button
                 type="submit"
                 disabled={pendingEmpresa}
-                className="px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors"
+                className="px-4 py-2.5 text-sm font-bold text-white bg-brand-blue rounded-xl hover:bg-brand-blue-dark active:scale-[0.99] disabled:opacity-50 transition-all shadow-sm shadow-brand-blue/15 cursor-pointer"
               >
                 {pendingEmpresa ? 'Guardando...' : '+ Agregar empresa'}
               </button>
@@ -217,7 +217,7 @@ export function ClientesShell({
                 <button
                   type="submit"
                   disabled={pendingVacante}
-                  className="px-4 py-2 text-sm font-medium text-white bg-gray-900 rounded-lg hover:bg-gray-800 disabled:opacity-50 transition-colors"
+                  className="px-4 py-2.5 text-sm font-bold text-white bg-brand-blue rounded-xl hover:bg-brand-blue-dark active:scale-[0.99] disabled:opacity-50 transition-all shadow-sm shadow-brand-blue/15 cursor-pointer"
                 >
                   {pendingVacante ? 'Guardando...' : '+ Agregar vacante'}
                 </button>
