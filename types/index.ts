@@ -259,3 +259,33 @@ export interface CotizadorResult {
   esTI: boolean
 }
 
+// ─── CRM Leads Types ───────────────────────────────────────────────────────────
+
+export type LeadOrigen =
+  | 'sitio_web'
+  | 'meta_ads'
+  | 'google_ads'
+  | 'linkedin_ads'
+  | 'otro'
+
+export type LeadEstado =
+  | 'nuevo'
+  | 'contactado'
+  | 'en_negociacion'
+  | 'ganado'
+  | 'perdido'
+
+export interface LeadRow {
+  id: string
+  nombre: string
+  apellido: string
+  empresa_razon_social: string
+  telefono: string | null
+  email: string | null
+  sector: string | null
+  origen: LeadOrigen
+  estado: LeadEstado
+  created_at: string
+  updated_at: string
+}
+

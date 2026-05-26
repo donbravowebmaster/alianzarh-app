@@ -101,3 +101,30 @@ CREATE POLICY "authenticated_full_access" ON candidatos
   FOR ALL TO authenticated USING (true) WITH CHECK (true);
 CREATE POLICY "authenticated_full_access" ON candidatos_vacantes
   FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
+-- ─── Leads ────────────────────────────────────────────────────────────────────
+CREATE TABLE leads (
+  id                   UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  nombre               TEXT NOT NULL,
+  apellido             TEXT NOT NULL,
+  empresa_razon_social TEXT NOT NULL,
+  telefono             TEXT,
+  email                TEXT,
+  sector               TEXT,
+  origen               TEXT NOT NULL,
+  estado               TEXT NOT NULL DEFAULT 'nuevo',
+  created_at           TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at           TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE TRIGGER trg_leads_updated_at
+  BEFORE UPDATE ON leads
+  FOR EACH ROW EXECUTE FUNCTION set_updated_at();
+
+ALTER TABLE leads ENABLE ROW LEVEL SECURITY;
+
+CREATE POLICY "authenticated_full_access" ON leads
+  FOR ALL TO authenticated USING (true) WITH CHECK (true);
+
+CREATE POLICY "anonymous_insert" ON leads
+  FOR INSERT TO anon WITH CHECK (true);
