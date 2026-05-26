@@ -1,5 +1,6 @@
 'use client'
 
+import { useEffect, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
@@ -46,6 +47,25 @@ const navItems = [
 export function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
+
+  useEffect(() => {
+    // Determinar tema inicial al montar
+    const isDark = document.documentElement.classList.contains('dark')
+    setTheme(isDark ? 'dark' : 'light')
+  }, [])
+
+  const toggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light'
+    setTheme(nextTheme)
+    if (nextTheme === 'dark') {
+      document.documentElement.classList.add('dark')
+      localStorage.setItem('theme', 'dark')
+    } else {
+      document.documentElement.classList.remove('dark')
+      localStorage.setItem('theme', 'light')
+    }
+  }
 
   async function handleSignOut() {
     const supabase = createClient()
@@ -57,19 +77,31 @@ export function Sidebar() {
   return (
     <aside className="fixed top-0 left-0 h-full w-[220px] bg-white border-r border-gray-100 flex flex-col z-10 select-none">
       {/* Logo / Brand */}
-      <div className="px-5 py-4 border-b border-gray-100">
-        <div className="flex items-center gap-3 group cursor-pointer">
-          <div className="w-8 h-8 flex-shrink-0 transition-transform duration-500 ease-out group-hover:scale-110 group-hover:rotate-6">
-            <img 
-              src="/isotipo-alianza-rh.svg" 
-              alt="Alianza RH Isotipo" 
-              className="w-full h-full object-contain filter drop-shadow-[0_2px_4px_rgba(53,126,227,0.12)]" 
-            />
-          </div>
-          <span className="text-sm font-extrabold text-gray-900 tracking-tight transition-colors duration-300 group-hover:text-brand-blue">
-            Alianza <span className="text-brand-purple">RH</span>
-          </span>
+      <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+        <div className="h-8 flex-shrink-0 flex items-center">
+          <img 
+            src="/logo-alianza-rh.svg" 
+            alt="Alianza RH Logo" 
+            className="h-full w-auto object-contain dark:brightness-0 dark:invert transition-transform duration-300 hover:scale-103" 
+          />
         </div>
+        
+        {/* Conmutador de Tema (Modo Oscuro) */}
+        <button
+          onClick={toggleTheme}
+          className="p-1.5 rounded-lg text-gray-400 hover:text-brand-blue hover:bg-brand-blue/5 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+          title={theme === 'light' ? 'Activar Modo Oscuro' : 'Activar Modo Claro'}
+        >
+          {theme === 'light' ? (
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+            </svg>
+          ) : (
+            <svg className="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-12.728l.707.707m12.728 12.728l.707-.707M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0z" />
+            </svg>
+          )}
+        </button>
       </div>
 
       {/* Navigation */}

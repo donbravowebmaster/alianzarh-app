@@ -33,3 +33,169 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
+
+/* ==========================================
+   SOPORTE GLOBAL PARA MODO OSCURO (DARK MODE)
+   ========================================== */
+.dark {
+  --background: #070a13;
+  --foreground: #f8fafc;
+}
+
+.dark body {
+  background-color: #070a13;
+  color: #f8fafc;
+}
+
+/* Scrollbars en modo oscuro */
+.dark ::-webkit-scrollbar-thumb { background: #374151; }
+.dark ::-webkit-scrollbar-thumb:hover { background: #4b5563; }
+
+/* Contenedores y Fondos Estándar */
+.dark .bg-white {
+  background-color: #0f172a !important; /* slate-900 */
+}
+.dark .bg-slate-50,
+.dark .bg-gray-50,
+.dark .bg-slate-50\/50,
+.dark .bg-gray-50\/50,
+.dark .bg-gray-50\/80 {
+  background-color: #1e293b/40 !important; /* slate-800/40 */
+  background-color: rgba(30, 41, 59, 0.4) !important;
+}
+
+/* Panel Lateral y Divisiones */
+.dark aside {
+  background-color: #0f172a !important;
+  border-right-color: #1e293b !important;
+}
+.dark aside .border-b,
+.dark aside .border-t,
+.dark .border-gray-100,
+.dark .border-gray-200,
+.dark .border-slate-200,
+.dark .border-slate-100,
+.dark .divide-gray-100 > :not([hidden]) ~ :not([hidden]),
+.dark .divide-gray-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: #1e293b !important;
+}
+
+/* Colores de Textos */
+.dark .text-gray-900,
+.dark .text-slate-900 {
+  color: #ffffff !important;
+}
+.dark .text-gray-800,
+.dark .text-slate-800 {
+  color: #f1f5f9 !important;
+}
+.dark .text-gray-700,
+.dark .text-slate-700,
+.dark .text-gray-600,
+.dark .text-slate-600 {
+  color: #cbd5e1 !important;
+}
+.dark .text-gray-500,
+.dark .text-slate-500,
+.dark .text-gray-400 {
+  color: #94a3b8 !important;
+}
+
+/* Formulario: Inputs y Selectores */
+.dark input,
+.dark select,
+.dark textarea {
+  background-color: #1e293b !important;
+  color: #ffffff !important;
+  border-color: #334155 !important;
+}
+.dark input:focus,
+.dark select:focus,
+.dark textarea:focus {
+  border-color: #357ee3 !important;
+  box-shadow: 0 0 0 4px rgba(53, 126, 227, 0.15) !important;
+}
+.dark input::placeholder {
+  color: #64748b !important;
+}
+.dark input:disabled,
+.dark select:disabled {
+  background-color: #0f172a !important;
+  color: #64748b !important;
+}
+
+/* Efectos de Hover */
+.dark .hover\:bg-gray-50\/60:hover,
+.dark .hover\:bg-gray-50:hover,
+.dark .hover\:bg-slate-50:hover,
+.dark tr:hover {
+  background-color: rgba(30, 41, 59, 0.5) !important;
+}
+
+/* Badges de Estado (CRM / Leads) con luminiscencia adaptada */
+.dark .bg-blue-50 {
+  background-color: rgba(53, 126, 227, 0.15) !important;
+  color: #60a5fa !important;
+  border-color: rgba(53, 126, 227, 0.3) !important;
+}
+.dark .bg-emerald-50 {
+  background-color: rgba(16, 185, 129, 0.15) !important;
+  color: #34d399 !important;
+  border-color: rgba(16, 185, 129, 0.3) !important;
+}
+.dark .bg-amber-50 {
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  color: #fbbf24 !important;
+  border-color: rgba(245, 158, 11, 0.3) !important;
+}
+.dark .bg-purple-50 {
+  background-color: rgba(168, 85, 247, 0.15) !important;
+  color: #c084fc !important;
+  border-color: rgba(168, 85, 247, 0.3) !important;
+}
+.dark .bg-red-50 {
+  background-color: rgba(239, 68, 68, 0.15) !important;
+  color: #f87171 !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+}
+.dark .bg-indigo-50 {
+  background-color: rgba(99, 102, 241, 0.15) !important;
+  color: #818cf8 !important;
+  border-color: rgba(99, 102, 241, 0.3) !important;
+}
+.dark .bg-gray-100 {
+  background-color: rgba(148, 163, 184, 0.15) !important;
+  color: #cbd5e1 !important;
+  border-color: rgba(148, 163, 184, 0.3) !important;
+}
+
+/* Modales y Diálogos */
+.dark .fixed.inset-0 .bg-white {
+  background-color: #0f172a !important;
+  border: 1px solid #1e293b !important;
+}
+.dark .bg-black\/40 {
+  background-color: rgba(0, 0, 0, 0.6) !important;
+}
+
+/* Cajas Bento y Estadísticas especiales */
+.dark .bg-blue-50\/40 {
+  background-color: rgba(53, 126, 227, 0.08) !important;
+  border-color: rgba(53, 126, 227, 0.15) !important;
+}
+.dark .bg-emerald-50\/40 {
+  background-color: rgba(16, 185, 129, 0.08) !important;
+  border-color: rgba(16, 185, 129, 0.15) !important;
+}
+.dark .bg-gray-50.border.border-gray-100 {
+  background-color: #1e293b !important;
+  border-color: #334155 !important;
+}
+
+/* Kanban CRM Columnas */
+.dark .crm-column-prospecto { background-color: rgba(30, 41, 59, 0.25) !important; }
+.dark .crm-column-entrevista_inicial { background-color: rgba(53, 126, 227, 0.06) !important; }
+.dark .crm-column-entrevista_cliente { background-color: rgba(99, 102, 241, 0.06) !important; }
+.dark .crm-column-oferta { background-color: rgba(245, 158, 11, 0.06) !important; }
+.dark .crm-column-contratado { background-color: rgba(16, 185, 129, 0.06) !important; }
+

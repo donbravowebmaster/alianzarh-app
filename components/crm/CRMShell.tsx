@@ -217,7 +217,7 @@ export function CRMShell() {
                       {col.length}
                     </span>
                   </div>
-                  <div className={`flex-1 rounded-xl border border-gray-200/70 ${bg} p-2 space-y-2 overflow-y-auto`}>
+                  <div className={`flex-1 rounded-xl border border-gray-200/70 ${bg} crm-column-${etapa} p-2 space-y-2 overflow-y-auto`}>
                     {col.map((c) => (
                       <div
                         key={c.id}
