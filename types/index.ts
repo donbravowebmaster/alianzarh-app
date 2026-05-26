@@ -223,6 +223,21 @@ export type NivelPuesto =
   | 'Gerencial / Directivo'
   | 'Ingeniería / TI'
 
+export interface CotizadorConfigNivel {
+  nivel: NivelPuesto
+  umbralMax: number
+  factor: number
+  garantiaDias: number
+}
+
+export interface CotizadorConfig {
+  costoOperativoMensual: number
+  capacidadVacantesMes: number
+  margen: number
+  niveles: CotizadorConfigNivel[]
+  keywordsTI: string[]
+}
+
 export interface CotizadorInput {
   puesto: string
   sueldo: number
