@@ -17,6 +17,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             } else {
               document.documentElement.classList.remove('dark')
             }
+            if (localStorage.sidebarCollapsed === 'true') {
+              document.documentElement.classList.add('sidebar-collapsed')
+            } else {
+              document.documentElement.classList.remove('sidebar-collapsed')
+            }
           } catch (_) {}
         `}} />
       </head>

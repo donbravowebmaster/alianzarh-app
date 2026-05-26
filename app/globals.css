@@ -19,6 +19,11 @@
   --sidebar-width: 220px;
 }
 
+html.sidebar-collapsed,
+body.sidebar-collapsed {
+  --sidebar-width: 72px;
+}
+
 body {
   background-color: var(--background);
   color: var(--foreground);

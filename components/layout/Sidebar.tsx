@@ -48,11 +48,21 @@ export function Sidebar() {
   const pathname = usePathname()
   const router = useRouter()
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const [isCollapsed, setIsCollapsed] = useState(false)
 
   useEffect(() => {
     // Determinar tema inicial al montar
     const isDark = document.documentElement.classList.contains('dark')
     setTheme(isDark ? 'dark' : 'light')
+
+    // Determinar colapso inicial al montar
+    const collapsed = localStorage.getItem('sidebarCollapsed') === 'true'
+    setIsCollapsed(collapsed)
+    if (collapsed) {
+      document.documentElement.classList.add('sidebar-collapsed')
+    } else {
+      document.documentElement.classList.remove('sidebar-collapsed')
+    }
   }, [])
 
   const toggleTheme = () => {
@@ -75,21 +85,69 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="fixed top-0 left-0 h-full w-[220px] bg-white border-r border-gray-100 flex flex-col z-10 select-none">
+    <aside className="fixed top-0 left-0 h-full w-[var(--sidebar-width,220px)] bg-white border-r border-gray-100 flex flex-col z-10 select-none transition-all duration-300 ease-in-out">
+      {/* Botón de Colapso Flotante (Estilo Yodeck) */}
+      <button
+        onClick={() => {
+          const nextCollapsed = !isCollapsed
+          setIsCollapsed(nextCollapsed)
+          localStorage.setItem('sidebarCollapsed', String(nextCollapsed))
+          if (nextCollapsed) {
+            document.documentElement.classList.add('sidebar-collapsed')
+          } else {
+            document.documentElement.classList.remove('sidebar-collapsed')
+          }
+        }}
+        className="absolute -right-3 top-[32px] -translate-y-1/2 w-6 h-6 bg-white dark:bg-slate-900 border border-gray-200 dark:border-slate-800 rounded-full flex items-center justify-center shadow-md hover:bg-gray-50 dark:hover:bg-slate-800 text-gray-500 hover:text-brand-blue transition-colors cursor-pointer z-50 focus:outline-none"
+        title={isCollapsed ? "Expandir barra lateral" : "Contraer barra lateral"}
+      >
+        <svg
+          className={`w-3.5 h-3.5 transition-transform duration-300 ${isCollapsed ? 'rotate-180' : ''}`}
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={3}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+        </svg>
+      </button>
+
       {/* Logo / Brand */}
-      <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-        <div className="h-8 w-28 flex-shrink-0 relative">
+      <div className={`border-b border-gray-100 flex items-center transition-all duration-300 relative h-16 shrink-0 ${
+        isCollapsed ? 'px-3 justify-center' : 'px-5 justify-between'
+      }`}>
+        {/* Logo Completo (Visible cuando está expandido) */}
+        <div className={`h-8 w-28 relative flex-shrink-0 transition-all duration-300 ${
+          isCollapsed 
+            ? 'opacity-0 scale-75 w-0 pointer-events-none overflow-hidden' 
+            : 'opacity-100 scale-100'
+        }`}>
           <img 
             src="/logo-alianza-rh.svg" 
             alt="Alianza RH Logo" 
             className="w-full h-full object-contain dark:brightness-0 dark:invert transition-transform duration-300 hover:scale-103" 
           />
         </div>
+
+        {/* Isotipo (Visible cuando está colapsado) */}
+        <div className={`h-8 w-8 relative flex-shrink-0 transition-all duration-300 flex items-center justify-center ${
+          isCollapsed 
+            ? 'opacity-100 scale-100' 
+            : 'opacity-0 scale-75 w-0 pointer-events-none overflow-hidden'
+        }`}>
+          <img 
+            src="/isotipo-alianza-rh.svg" 
+            alt="Alianza RH Isotipo" 
+            className="w-full h-full object-contain dark:brightness-0 dark:invert transition-transform duration-300 hover:scale-105" 
+          />
+        </div>
         
         {/* Conmutador de Tema (Modo Oscuro) */}
         <button
           onClick={toggleTheme}
-          className="p-1.5 rounded-lg text-gray-400 hover:text-brand-blue hover:bg-brand-blue/5 dark:hover:bg-slate-800 transition-colors cursor-pointer"
+          className={`p-1.5 rounded-lg text-gray-400 hover:text-brand-blue hover:bg-brand-blue/5 dark:hover:bg-slate-800 transition-all duration-300 cursor-pointer ${
+            isCollapsed ? 'opacity-0 w-0 h-0 p-0 pointer-events-none overflow-hidden' : 'opacity-100'
+          }`}
           title={theme === 'light' ? 'Activar Modo Oscuro' : 'Activar Modo Claro'}
         >
           {theme === 'light' ? (
@@ -105,8 +163,10 @@ export function Sidebar() {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 px-3 py-3 space-y-0.5">
-        <p className="px-2 pb-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider">
+      <nav className={`flex-1 py-3 space-y-0.5 transition-all duration-300 ${isCollapsed ? 'px-2' : 'px-3'}`}>
+        <p className={`px-2 pb-1.5 text-[10px] font-bold text-gray-400 uppercase tracking-wider transition-all duration-300 ${
+          isCollapsed ? 'opacity-0 h-0 py-0 overflow-hidden pointer-events-none' : 'opacity-100'
+        }`}>
           Módulos
         </p>
         {navItems.map((item) => {
@@ -115,35 +175,59 @@ export function Sidebar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
+              className={`flex items-center rounded-lg text-sm font-semibold transition-all duration-300 ${
+                isCollapsed ? 'justify-center p-2.5 gap-0' : 'gap-2.5 px-2.5 py-2'
+              } ${
                 isActive
                   ? 'bg-brand-blue/10 text-brand-blue shadow-3xs'
                   : 'text-gray-500 hover:text-brand-blue hover:bg-brand-blue/5'
               }`}
+              title={isCollapsed ? item.label : undefined}
             >
-              <span className={isActive ? 'text-brand-blue' : 'text-gray-400 group-hover:text-brand-blue transition-colors'}>{item.icon}</span>
-              {item.label}
+              <span className={`transition-all duration-300 ${
+                isActive ? 'text-brand-blue' : 'text-gray-400 group-hover:text-brand-blue transition-colors'
+              } ${isCollapsed ? 'scale-110' : ''}`}>
+                {item.icon}
+              </span>
+              <span className={`transition-all duration-300 whitespace-nowrap overflow-hidden ${
+                isCollapsed ? 'opacity-0 w-0 pointer-events-none' : 'opacity-100 w-auto'
+              }`}>
+                {item.label}
+              </span>
             </Link>
           )
         })}
       </nav>
 
       {/* Sign Out & Footer */}
-      <div className="px-3 py-3 border-t border-gray-100 space-y-2 shrink-0">
+      <div className={`border-t border-gray-100 space-y-2 shrink-0 transition-all duration-300 ${isCollapsed ? 'p-2' : 'px-3 py-3'}`}>
         <button
           onClick={handleSignOut}
-          className="w-full flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-semibold text-gray-500 hover:text-red-600 hover:bg-red-50 transition-all duration-200 cursor-pointer"
+          className={`w-full flex items-center rounded-lg text-sm font-semibold text-gray-500 hover:text-red-600 hover:bg-red-50 dark:hover:bg-red-950/30 transition-all duration-300 cursor-pointer ${
+            isCollapsed ? 'justify-center p-2.5 gap-0' : 'gap-2.5 px-2.5 py-2'
+          }`}
+          title={isCollapsed ? "Cerrar sesión" : undefined}
         >
-          <svg className="w-4 h-4 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-          </svg>
-          Cerrar sesión
+          <span className="flex-shrink-0">
+            <svg className="w-4 h-4 text-gray-400 group-hover:text-red-600 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+          </span>
+          <span className={`transition-all duration-300 whitespace-nowrap overflow-hidden ${
+            isCollapsed ? 'opacity-0 w-0 pointer-events-none' : 'opacity-100 w-auto'
+          }`}>
+            Cerrar sesión
+          </span>
         </button>
 
         {/* Footer / version info */}
-        <div className="px-2 pt-1 text-[9px] text-gray-400 font-medium flex items-center justify-between">
+        <div className={`px-2 pt-1 text-[9px] text-gray-400 font-medium flex items-center transition-all duration-300 ${
+          isCollapsed 
+            ? 'opacity-0 h-0 overflow-hidden pointer-events-none' 
+            : 'justify-between opacity-100 h-auto'
+        }`}>
           <span>© {new Date().getFullYear()} Alianza RH</span>
-          <span className="bg-gray-100 text-gray-500 font-bold px-1.5 py-0.5 rounded text-[8px] tracking-wide">v1.0</span>
+          <span className="bg-gray-100 dark:bg-slate-800 text-gray-500 dark:text-gray-400 font-bold px-1.5 py-0.5 rounded text-[8px] tracking-wide">v1.0</span>
         </div>
       </div>
     </aside>
