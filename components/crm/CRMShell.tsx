@@ -188,7 +188,7 @@ export function CRMShell() {
                   value={search}
                   onChange={(e) => setSearch(e.target.value)}
                   placeholder="Buscar candidato..."
-                  className="w-full px-3.5 py-2 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 bg-white transition-shadow"
+                  className="w-full px-3.5 py-2 text-sm border border-gray-300 dark:border-slate-800 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 dark:placeholder-slate-500 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-shadow"
                 />
               </div>
               <button
@@ -269,30 +269,30 @@ export function CRMShell() {
             <form onSubmit={handleSave} className="px-6 py-5 space-y-4">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-gray-700 mb-1.5">Nombre</label>
+                  <label className="block text-xs font-medium text-gray-700 dark:text-slate-300 mb-1.5">Nombre</label>
                   <input
                     type="text"
                     autoFocus
                     value={form.nombre}
                     onChange={(e) => setForm((p) => ({ ...p, nombre: e.target.value }))}
                     placeholder="María"
-                    className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 transition-shadow"
+                    className="w-full px-3.5 py-2.5 text-sm border border-gray-300 dark:border-slate-800 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 dark:placeholder-slate-500 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-shadow"
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-gray-700 mb-1.5">Apellido</label>
+                  <label className="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1.5">Apellido</label>
                   <input
                     type="text"
                     value={form.apellido}
                     onChange={(e) => setForm((p) => ({ ...p, apellido: e.target.value }))}
                     placeholder="García"
-                    className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 transition-shadow"
+                    className="w-full px-3.5 py-2.5 text-sm border border-gray-300 dark:border-slate-800 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 dark:placeholder-slate-500 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-shadow"
                   />
                 </div>
               </div>
 
               <div>
-                <label className="block text-xs font-medium text-gray-700 mb-1.5">
+                <label className="block text-xs font-medium text-gray-700 dark:text-slate-300 mb-1.5">
                   Correo electrónico
                 </label>
                 <input
@@ -300,7 +300,7 @@ export function CRMShell() {
                   value={form.email}
                   onChange={(e) => setForm((p) => ({ ...p, email: e.target.value }))}
                   placeholder="(Opcional)"
-                  className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 transition-shadow"
+                  className="w-full px-3.5 py-2.5 text-sm border border-gray-300 dark:border-slate-800 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 dark:placeholder-slate-500 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-shadow"
                 />
               </div>
 

@@ -150,18 +150,18 @@ export function CotizadorForm() {
                 value={puesto}
                 onChange={(e) => setPuesto(e.target.value)}
                 placeholder="Ej. Desarrollador Fullstack, Director de Operaciones"
-                className="w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 disabled:bg-gray-50 transition-shadow"
+                className="w-full px-3.5 py-2.5 text-sm border border-gray-300 dark:border-slate-800 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 dark:placeholder-slate-500 disabled:bg-gray-50 dark:disabled:bg-slate-950/40 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-shadow"
                 disabled={isPending}
                 required
               />
             </div>
 
             <div>
-              <label htmlFor="sueldo" className="block text-xs font-semibold text-gray-700 mb-1.5">
+              <label htmlFor="sueldo" className="block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1.5">
                 Sueldo mensual bruto sugerido
               </label>
               <div className="relative">
-                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-gray-400">$</span>
+                <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-sm text-gray-400 dark:text-slate-500">$</span>
                 <input
                   id="sueldo"
                   type="text"
@@ -169,7 +169,7 @@ export function CotizadorForm() {
                   value={sueldo}
                   onChange={(e) => setSueldo(e.target.value.replace(/[^0-9.,]/g, ''))}
                   placeholder="0"
-                  className="w-full pl-8 pr-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 disabled:bg-gray-50 transition-shadow"
+                  className="w-full pl-8 pr-3.5 py-2.5 text-sm border border-gray-300 dark:border-slate-800 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 dark:placeholder-slate-500 disabled:bg-gray-50 dark:disabled:bg-slate-950/40 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-shadow"
                   disabled={isPending}
                   required
                 />

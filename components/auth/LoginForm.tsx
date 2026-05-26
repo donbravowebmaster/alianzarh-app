@@ -33,11 +33,11 @@ export function LoginForm() {
     <form onSubmit={handleSubmit} noValidate className="space-y-4 animate-in fade-in-50 slide-in-from-bottom-5 duration-500">
       <div className="bg-white/80 border border-white/60 rounded-2xl p-7 space-y-5 shadow-[0_15px_35px_rgba(0,0,0,0.03)] backdrop-blur-md transition-all duration-300 hover:shadow-[0_20px_40px_rgba(0,0,0,0.05)]">
         <div>
-          <label htmlFor="email" className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
+          <label htmlFor="email" className="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">
             Correo electrónico
           </label>
           <div className="relative">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
+            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.206" />
               </svg>
@@ -50,18 +50,18 @@ export function LoginForm() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="usuario@empresa.com"
-              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl outline-none transition-all duration-300 focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/10 bg-white/50 placeholder:text-gray-400 disabled:bg-gray-50/50 disabled:text-gray-400"
+              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 dark:border-slate-800 rounded-xl outline-none transition-all duration-300 focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/10 dark:focus:ring-brand-blue/15 bg-white/50 dark:bg-slate-900/60 placeholder:text-gray-400 dark:placeholder-slate-500 disabled:bg-gray-50/50 disabled:text-gray-400 text-gray-900 dark:text-slate-100"
               disabled={loading}
             />
           </div>
         </div>
 
         <div>
-          <label htmlFor="password" className="block text-xs font-bold text-gray-700 mb-1.5 uppercase tracking-wider">
+          <label htmlFor="password" className="block text-xs font-bold text-gray-700 dark:text-slate-300 mb-1.5 uppercase tracking-wider">
             Contraseña
           </label>
           <div className="relative">
-            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400">
+            <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-gray-400 dark:text-slate-500">
               <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                 <path strokeLinecap="round" strokeLinejoin="round" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
               </svg>
@@ -74,7 +74,7 @@ export function LoginForm() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="••••••••"
-              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 rounded-xl outline-none transition-all duration-300 focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/10 bg-white/50 placeholder:text-gray-400 disabled:bg-gray-50/50 disabled:text-gray-400"
+              className="w-full pl-10 pr-4 py-2.5 text-sm border border-gray-200 dark:border-slate-800 rounded-xl outline-none transition-all duration-300 focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/10 dark:focus:ring-brand-blue/15 bg-white/50 dark:bg-slate-900/60 placeholder:text-gray-400 dark:placeholder-slate-500 disabled:bg-gray-50/50 disabled:text-gray-400 text-gray-900 dark:text-slate-100"
               disabled={loading}
             />
           </div>

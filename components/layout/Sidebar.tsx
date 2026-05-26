@@ -78,11 +78,11 @@ export function Sidebar() {
     <aside className="fixed top-0 left-0 h-full w-[220px] bg-white border-r border-gray-100 flex flex-col z-10 select-none">
       {/* Logo / Brand */}
       <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-        <div className="h-8 flex-shrink-0 flex items-center">
+        <div className="h-8 w-28 flex-shrink-0 relative">
           <img 
             src="/logo-alianza-rh.svg" 
             alt="Alianza RH Logo" 
-            className="h-full w-auto object-contain dark:brightness-0 dark:invert transition-transform duration-300 hover:scale-103" 
+            className="w-full h-full object-contain dark:brightness-0 dark:invert transition-transform duration-300 hover:scale-103" 
           />
         </div>
         

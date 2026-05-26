@@ -14,8 +14,8 @@ const ESTADO_COLORS: Record<string, string> = {
   cancelada: 'bg-red-50 text-red-700 border-red-200',
 }
 
-const input = 'w-full px-3.5 py-2.5 text-sm border border-gray-300 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 disabled:bg-gray-50 bg-white transition-shadow'
-const label = 'block text-xs font-semibold text-gray-700 mb-1.5'
+const input = 'w-full px-3.5 py-2.5 text-sm border border-gray-300 dark:border-slate-800 rounded-xl outline-none focus:border-brand-blue focus:ring-1 focus:ring-brand-blue placeholder:text-gray-400 dark:placeholder-slate-500 disabled:bg-gray-50 dark:disabled:bg-slate-950/40 bg-white dark:bg-slate-900 text-gray-900 dark:text-slate-100 transition-all'
+const label = 'block text-xs font-semibold text-gray-700 dark:text-slate-300 mb-1.5'
 
 function formatMXN(n: number) {
   return new Intl.NumberFormat('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 }).format(n)
