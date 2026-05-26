@@ -55,16 +55,20 @@ export function Sidebar() {
   }
 
   return (
-    <aside className="fixed top-0 left-0 h-full w-[220px] bg-white border-r border-gray-100 flex flex-col z-10">
+    <aside className="fixed top-0 left-0 h-full w-[220px] bg-white border-r border-gray-100 flex flex-col z-10 select-none">
       {/* Logo / Brand */}
       <div className="px-5 py-4 border-b border-gray-100">
-        <div className="flex items-center gap-2.5">
-          <div className="w-7 h-7 bg-brand-blue rounded-md flex items-center justify-center flex-shrink-0 shadow-sm shadow-brand-blue/25">
-            <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z" />
-            </svg>
+        <div className="flex items-center gap-3 group cursor-pointer">
+          <div className="w-8 h-8 flex-shrink-0 transition-transform duration-500 ease-out group-hover:scale-110 group-hover:rotate-6">
+            <img 
+              src="/isotipo-alianza-rh.svg" 
+              alt="Alianza RH Isotipo" 
+              className="w-full h-full object-contain filter drop-shadow-[0_2px_4px_rgba(53,126,227,0.12)]" 
+            />
           </div>
-          <span className="text-sm font-extrabold text-gray-900 tracking-tight">Alianza RH</span>
+          <span className="text-sm font-extrabold text-gray-900 tracking-tight transition-colors duration-300 group-hover:text-brand-blue">
+            Alianza <span className="text-brand-purple">RH</span>
+          </span>
         </div>
       </div>
 
@@ -81,7 +85,7 @@ export function Sidebar() {
               href={item.href}
               className={`flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-semibold transition-all duration-200 ${
                 isActive
-                  ? 'bg-brand-blue/10 text-brand-blue'
+                  ? 'bg-brand-blue/10 text-brand-blue shadow-3xs'
                   : 'text-gray-500 hover:text-brand-blue hover:bg-brand-blue/5'
               }`}
             >
@@ -92,8 +96,8 @@ export function Sidebar() {
         })}
       </nav>
 
-      {/* Sign Out */}
-      <div className="px-3 py-3 border-t border-gray-100">
+      {/* Sign Out & Footer */}
+      <div className="px-3 py-3 border-t border-gray-100 space-y-2 shrink-0">
         <button
           onClick={handleSignOut}
           className="w-full flex items-center gap-2.5 px-2 py-2 rounded-lg text-sm font-semibold text-gray-500 hover:text-red-600 hover:bg-red-50 transition-all duration-200 cursor-pointer"
@@ -103,6 +107,12 @@ export function Sidebar() {
           </svg>
           Cerrar sesión
         </button>
+
+        {/* Footer / version info */}
+        <div className="px-2 pt-1 text-[9px] text-gray-400 font-medium flex items-center justify-between">
+          <span>© {new Date().getFullYear()} Alianza RH</span>
+          <span className="bg-gray-100 text-gray-500 font-bold px-1.5 py-0.5 rounded text-[8px] tracking-wide">v1.0</span>
+        </div>
       </div>
     </aside>
   )
